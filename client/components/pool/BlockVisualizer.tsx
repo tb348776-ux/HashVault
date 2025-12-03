@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Box, ChevronRight, Zap, Activity } from 'lucide-react';
 
 const formatXMR = (atomic: number | null | undefined): string => {
@@ -57,12 +56,11 @@ const BlockCard = ({ block, index, isLatest }: BlockCardProps) => {
   const isSolo = block.solo === true;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -50, scale: 0.9 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 50, scale: 0.9 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`relative flex-shrink-0 w-24 sm:w-28 md:w-36 lg:w-40 ${isLatest ? 'z-10' : ''}`}
+    <div
+      className={`relative flex-shrink-0 w-24 sm:w-28 md:w-36 lg:w-40 animate-slideIn ${isLatest ? 'z-10' : ''}`}
+      style={{
+        animationDelay: `${index * 0.1}s`,
+      }}
     >
       <div
         className={`relative h-36 sm:h-40 md:h-48 lg:h-52 rounded-lg border ${effortBorder}
@@ -150,7 +148,7 @@ const BlockCard = ({ block, index, isLatest }: BlockCardProps) => {
           <ChevronRight className="w-6 h-6 text-gray-700" />
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
@@ -174,11 +172,7 @@ const PendingBlock = ({ currentEffort = 0, difficulty = 0, poolHashRate = 0 }: P
   const estimatedMinutes = Math.floor(estimatedSeconds / 60);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="relative flex-shrink-0 w-28 sm:w-32 md:w-40 lg:w-44"
-    >
+    <div className="relative flex-shrink-0 w-28 sm:w-32 md:w-40 lg:w-44 animate-fadeIn">
       <div
         className="relative h-36 sm:h-40 md:h-48 lg:h-52 rounded-lg border-2 border-dashed border-cyan-500/50
                     backdrop-blur-sm overflow-hidden
@@ -247,7 +241,7 @@ const PendingBlock = ({ currentEffort = 0, difficulty = 0, poolHashRate = 0 }: P
         <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan-400" />
         <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400" />
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -263,10 +257,8 @@ const ChainArrow = () => (
       </div>
 
       {/* Animated particles */}
-      <motion.div
-        className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-500/50"
-        animate={{ x: [0, 60, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+      <div
+        className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-500/50 animate-floatParticle"
         style={{ transform: 'translateY(-50%)' }}
       />
     </div>
@@ -325,16 +317,14 @@ const BlockchainVisual = ({ blocks, currentEffort = 0, networkDifficulty = 0, po
         <ChainArrow />
 
         {/* Recent blocks */}
-        <AnimatePresence mode="popLayout">
-          {blocks?.slice(0, 6).map((block, index) => (
-            <BlockCard
-              key={block.hash}
-              block={block}
-              index={index}
-              isLatest={index === 0}
-            />
-          ))}
-        </AnimatePresence>
+        {blocks?.slice(0, 6).map((block, index) => (
+          <BlockCard
+            key={block.hash}
+            block={block}
+            index={index}
+            isLatest={index === 0}
+          />
+        ))}
       </div>
 
       {/* Stats bar */}
@@ -368,6 +358,56 @@ const BlockchainVisual = ({ blocks, currentEffort = 0, networkDifficulty = 0, po
           <div className="text-[10px] uppercase tracking-wider text-gray-500">Last Found</div>
         </div>
       </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-50px) scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes floatParticle {
+          0% {
+            transform: translateY(-50%) translateX(0);
+          }
+          50% {
+            transform: translateY(-50%) translateX(60px);
+          }
+          100% {
+            transform: translateY(-50%) translateX(0);
+          }
+        }
+
+        .animate-slideIn {
+          animation: slideIn 0.5s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .animate-floatParticle {
+          animation: floatParticle 2s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };
