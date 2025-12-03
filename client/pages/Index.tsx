@@ -36,8 +36,6 @@ const GlitchText = ({ children, className = "" }: { children: React.ReactNode; c
   return (
     <span className={`relative inline-block ${className}`}>
       <span className="relative z-10">{children}</span>
-      <span className="absolute top-0 left-0.5 text-cyan-400 opacity-70 animate-pulse">{children}</span>
-      <span className="absolute top-0 -left-0.5 text-pink-500 opacity-70 animate-pulse">{children}</span>
     </span>
   );
 };
