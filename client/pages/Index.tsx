@@ -161,7 +161,7 @@ const CyberPanel = ({ title, children, icon: Icon, color = "cyan" }: CyberPanelP
     <div className={`bg-black/40 ${c.border} border rounded-xl p-4 md:p-6 backdrop-blur-md relative overflow-hidden`}>
       <div className={`absolute top-0 left-0 right-0 h-px ${c.line} opacity-50`} />
       <div className="flex items-center gap-3 mb-4">
-        {Icon && typeof Icon === 'function' && <Icon className={`w-5 h-5 ${c.text}`} />}
+        {Icon && <Icon className={`w-5 h-5 ${c.text}`} />}
         <h2 className={`text-sm uppercase tracking-widest font-mono ${c.text}`}>{title}</h2>
         <div className="flex-1 h-px bg-gradient-to-r from-gray-800 to-transparent" />
       </div>
