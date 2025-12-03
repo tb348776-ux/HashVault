@@ -80,7 +80,7 @@ const StatCard = ({ icon: Icon, label, value, subValue, trend, color = "cyan", g
       <div className="relative">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs uppercase tracking-wider text-gray-500 font-mono">{label}</span>
-          {typeof Icon === 'function' ? <Icon className={`w-4 h-4 ${c.text} opacity-60 group-hover:opacity-100 transition-opacity`} /> : Icon}
+          <Icon className={`w-4 h-4 ${c.text} opacity-60 group-hover:opacity-100 transition-opacity`} />
         </div>
         {loading ? (
           <Skeleton className="h-7 w-24 bg-gray-800" />
